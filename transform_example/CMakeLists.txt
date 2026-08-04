@@ -29,4 +29,10 @@ ament_target_dependencies(
 install(TARGETS transform_example
   DESTINATION lib/${PROJECT_NAME})
 
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+
 ament_package()

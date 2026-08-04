@@ -2,15 +2,32 @@
 
 TransformExample::TransformExample() : Node("transform_example")
 {
-    // SETUP TRANSFORM BUFFER AND LISTENER HERE
+    tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
 }
 
 void TransformExample::printEEFrame()
 {
-    // LOOKUP TRANSFORM HERE
-    // IF SUCCESSFUL PRINT POSITION HERE
-    // IF SUCCESSFUL, PRINT ORIENTATION HERE
-    // IF NOT SUCCESSFUL, PRINT ERROR MESSAGE
+    try
+    {
+        geometry_msgs::msg::TransformStamped transform = tf_buffer_->lookupTransform("J4", "workpiece", tf2::TimePointZero);
+        
+        // print position
+        RCLCPP_INFO(this->get_logger(), 
+            "Position -- x: %0.2f, y: %0.2f, z: %0.2f", 
+            transform.transform.translation.x, transform.transform.translation.y, transform.transform.translation.z
+        );
+
+        // print orientation
+        RCLCPP_INFO(this->get_logger(), 
+            "Orientation -- w: %0.2f, x: %0.2f, y: %0.2f, z: %0.2f", 
+            transform.transform.rotation.w, transform.transform.rotation.x, transform.transform.rotation.y, transform.transform.rotation.z
+        );
+    }
+    catch (const tf2::TransformException & ex)
+    {
+        RCLCPP_ERROR(this->get_logger(), "lookup failed!");
+    }
 }
 
 int main(int argc, char** argv)

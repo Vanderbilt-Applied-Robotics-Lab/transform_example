@@ -1,0 +1,14 @@
+## Main launch file for the TF2 example code
+# Applied Robotics
+
+launch:
+    - node:
+        pkg: 'transform_example'
+        exec: 'transform_example'
+        name: 'transform_example'
+    
+    - node:
+        pkg: 'tf2_ros'
+        exec: 'static_transform_publisher'
+        name: 'static_transform_publisher'
+        args: '--x 0.5 --y 0.2 --z -0.1 --roll 0 --pitch 0 --yaw 0.785398 --frame-id base_link --child-frame-id workpiece'
