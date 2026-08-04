@@ -26,7 +26,7 @@ void TransformExample::printEEFrame()
     }
     catch (const tf2::TransformException & ex)
     {
-        RCLCPP_ERROR(this->get_logger(), "lookup failed!");
+        RCLCPP_ERROR(this->get_logger(), "lookup failed! Reason: %s", ex.what());
     }
 }
 
